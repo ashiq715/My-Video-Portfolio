@@ -1,0 +1,197 @@
+import React, { useState, useEffect } from 'react';
+
+// Icons from lucide-react, imported as SVGs to keep it in a single file.
+const Briefcase = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="7" width="20" height="15" rx="2" ry="2" />
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+    </svg>
+);
+
+const User2 = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+    </svg>
+);
+
+const Mail = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="20" height="16" x="2" y="4" rx="2" />
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+);
+
+const Video = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m16 2-4 4L8 2" />
+        <path d="M12 2v18" />
+        <path d="M19.166 16c2.463-2.88 2.215-6.88.948-8.834a2.915 2.915 0 0 0-2.45-1.125C15.938 5.768 14.887 5 12 5s-3.938.768-5.664 1.041c-1.267.854-1.515 4.854-.948 8.834" />
+    </svg>
+);
+
+// This is the main component of our portfolio
+const App = () => {
+    const [cursorPos, setCursorPos] = useState({ x: -100, y: -100, isVisible: false });
+
+    // Use a useEffect hook to manage the mousemove event listener
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            setCursorPos({ x: e.clientX, y: e.clientY, isVisible: true });
+        };
+
+        const handleMouseLeave = () => {
+            setCursorPos(prev => ({ ...prev, isVisible: false }));
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseleave', handleMouseLeave);
+
+        // Cleanup the event listeners when the component unmounts
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseleave', handleMouseLeave);
+        };
+    }, []); // Empty dependency array ensures this effect runs only once
+
+    return (
+        <div className="bg-[#0d1117] text-[#c9d1d9] min-h-screen font-sans">
+            <script src="https://cdn.tailwindcss.com"></script>
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+                body { font-family: 'Inter', sans-serif; }
+            `}</style>
+            
+            {/* The animated cursor follower */}
+            <div
+                className="fixed pointer-events-none rounded-full bg-blue-500 opacity-20 transition-all duration-300 blur-xl"
+                style={{
+                    left: cursorPos.x,
+                    top: cursorPos.y,
+                    transform: `translate(-50%, -50%) scale(${cursorPos.isVisible ? 1 : 0})`,
+                }}
+            ></div>
+
+            {/* Header & Navigation */}
+            <header className="bg-gray-900 shadow-lg sticky top-0 z-50">
+                <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                    <div className="flex items-center space-x-4">
+                        <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 rounded-lg">Ashique Rahman</div>
+                        <div className="text-sm text-gray-400 font-medium tracking-wide">Video Editor & Motion Designer</div>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                        <a href="#projects" className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-1"><Video /> Projects</a>
+                        <a href="#about" className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-1"><User2 /> About</a>
+                        <a href="#contact" className="text-gray-300 hover:text-white transition-colors duration-200 flex items-center gap-1"><Mail /> Contact</a>
+                    </div>
+                </nav>
+            </header>
+
+            <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+                {/* Hero Section */}
+                <section className="text-center py-20 rounded-xl bg-gray-800 bg-opacity-50 backdrop-blur-sm shadow-2xl mb-16">
+                    <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+                        Creative Storytelling Through Motion
+                    </h1>
+                    <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+                        With a decade of design experience and 7 years in video editing, I craft visually stunning and impactful content using Adobe Premiere Pro and After Effects.
+                    </p>
+                    <a href="#contact" className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105">
+                        Let's Collaborate
+                    </a>
+                </section>
+
+                {/* Featured Video Section */}
+                <section className="mb-16">
+                    <div className="bg-gray-800 rounded-xl overflow-hidden shadow-xl p-6">
+                        <h2 className="text-3xl font-bold text-white mb-6 text-center">Featured Portfolio Video</h2>
+                        <div className="aspect-video bg-gray-700">
+                            <iframe 
+                                className="w-full h-full" 
+                                src="https://www.youtube.com/embed/0y6TF0OtfLQ" 
+                                title="Featured YouTube video player" 
+                                frameBorder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowFullScreen
+                            ></iframe>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Projects Section */}
+                <section id="projects" className="mb-16">
+                    <h2 className="text-4xl font-bold text-center text-white mb-10">Other Projects</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {/* Project Card 1 (Promo Video) */}
+                        <ProjectCard 
+                            title="Promo/Ad Spot" 
+                            description="A short, engaging promotional spot for a brand or event." 
+                            videoId="C2Ht8utVbFo" 
+                        />
+
+                        {/* Project Card 2 (Documentary Video Style) */}
+                        <ProjectCard 
+                            title="Documentary Video Style" 
+                            description="An example of a music video edit, focusing on rhythm, color, and visual effects." 
+                            videoId="Za82721fpkM" 
+                        />
+                        
+                        {/* Project Card 3 (Shorts Video) */}
+                        <ProjectCard 
+                            title="Shorts Video Example" 
+                            description="A quick, dynamic short video demonstrating fast-paced editing and motion graphics." 
+                            videoId="L0P8OlgB_YY" 
+                        />
+                    </div>
+                </section>
+
+                {/* About Section */}
+                <section id="about" className="mb-16 bg-gray-800 rounded-xl p-8 shadow-xl">
+                    <h2 className="text-4xl font-bold text-center text-white mb-6 flex items-center justify-center gap-2"><User2 /> About Me</h2>
+                    <div className="max-w-3xl mx-auto text-lg text-gray-300 space-y-4">
+                        <p>Hello! My name is Ashique Rahman. With 10 years in the design field and 7 years specifically in video editing, I've had the privilege of working on a wide range of projects, from corporate explainers to dynamic social media content.</p>
+                        <p>My journey began in graphics, where I developed a keen eye for composition and visual flow. This foundation seamlessly transitioned into video editing, allowing me to create stories that are not just edited, but thoughtfully crafted. I'm a pro with Adobe Premiere Pro and After Effects and love the challenge of bringing a new vision to life.</p>
+                        <p>I believe that effective communication and a strong creative vision are key to a successful project. I'm excited to connect and explore how my skills can contribute to your next project.</p>
+                    </div>
+                </section>
+
+                {/* Contact Section */}
+                <section id="contact" className="mb-16">
+                    <h2 className="text-4xl font-bold text-center text-white mb-10 flex items-center justify-center gap-2"><Mail /> Get in Touch</h2>
+                    <div className="bg-gray-800 rounded-xl p-8 shadow-xl max-w-2xl mx-auto text-center">
+                        <p className="text-lg text-gray-300 mb-4">
+                            Feel free to reach out to me directly via email. I look forward to hearing from you!
+                        </p>
+                        <a href="mailto:ashiqrahmannayan71@gmail.com" className="inline-block text-lg font-semibold text-white px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-colors duration-300">
+                            ashiqrahmannayan71@gmail.com
+                        </a>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    );
+};
+
+// A simple component for a project card to keep the code clean
+const ProjectCard = ({ title, description, videoId }) => (
+    <div className="bg-gray-800 rounded-xl overflow-hidden shadow-xl transform transition-transform duration-300 hover:scale-105">
+        <div className="aspect-video bg-gray-700">
+            <iframe 
+                className="w-full h-full" 
+                src={`https://www.youtube.com/embed/${videoId}`} 
+                title="YouTube video player" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen
+            ></iframe>
+        </div>
+        <div className="p-6">
+            <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
+            <p className="text-gray-400 text-sm">{description}</p>
+        </div>
+    </div>
+);
+
+export default App;
